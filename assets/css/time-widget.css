@@ -1,0 +1,371 @@
+/* Стили для виджета времени */
+.time-widget-container {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 350px;
+    height: 100vh;
+    background: linear-gradient(135deg, rgba(30, 40, 54, 0.98) 0%, rgba(20, 28, 38, 0.98) 100%);
+    backdrop-filter: blur(20px);
+    border-left: 1px solid rgba(102, 192, 244, 0.2);
+    box-shadow: -10px 0 40px rgba(0, 0, 0, 0.5);
+    transform: translateX(100%);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 1000;
+    overflow-y: auto;
+}
+
+.time-widget-container.open {
+    transform: translateX(0);
+}
+
+.time-widget-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    z-index: 999;
+}
+
+.time-widget-overlay.open {
+    opacity: 1;
+    visibility: visible;
+}
+
+.time-widget-header {
+    padding: 20px;
+    border-bottom: 1px solid rgba(102, 192, 244, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.time-widget-title {
+    color: #66c0f4;
+    font-size: 18px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.time-widget-close {
+    background: none;
+    border: none;
+    color: #8f98a0;
+    font-size: 20px;
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+.time-widget-close:hover {
+    color: #66c0f4;
+    background: rgba(102, 192, 244, 0.1);
+}
+
+.time-widget-content {
+    padding: 20px;
+}
+
+.time-widget-main-stat {
+    text-align: center;
+    margin-bottom: 30px;
+    padding: 20px;
+    background: rgba(102, 192, 244, 0.05);
+    border-radius: 8px;
+    border: 1px solid rgba(102, 192, 244, 0.1);
+}
+
+.time-widget-total-time {
+    font-size: 32px;
+    font-weight: 700;
+    color: #66c0f4;
+    margin-bottom: 8px;
+    text-shadow: 0 0 20px rgba(102, 192, 244, 0.3);
+}
+
+.time-widget-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.time-widget-status.active {
+    background: rgba(76, 175, 80, 0.2);
+    color: #4caf50;
+    border: 1px solid rgba(76, 175, 80, 0.3);
+}
+
+.time-widget-status.inactive {
+    background: rgba(255, 152, 0, 0.2);
+    color: #ff9800;
+    border: 1px solid rgba(255, 152, 0, 0.3);
+}
+
+.time-widget-channel-selector {
+    margin-bottom: 20px;
+    padding: 15px;
+    background: rgba(102, 192, 244, 0.05);
+    border-radius: 6px;
+    border: 1px solid rgba(102, 192, 244, 0.1);
+}
+
+.time-widget-channel-select {
+    width: 100%;
+    padding: 8px 12px;
+    background: rgba(30, 40, 54, 0.8);
+    border: 1px solid rgba(102, 192, 244, 0.2);
+    border-radius: 4px;
+    color: #c7d5e0;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.time-widget-channel-select:focus {
+    outline: none;
+    border-color: #66c0f4;
+    box-shadow: 0 0 0 2px rgba(102, 192, 244, 0.2);
+}
+
+.time-widget-channel-select option {
+    background: #1e2836;
+    color: #c7d5e0;
+    padding: 8px;
+}
+
+.time-widget-channels {
+    margin-bottom: 20px;
+}
+
+.time-widget-channels-title {
+    color: #c7d5e0;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.time-widget-channel {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(102, 192, 244, 0.1);
+    border-radius: 6px;
+    padding: 15px;
+    margin-bottom: 10px;
+    transition: all 0.2s ease;
+}
+
+.time-widget-channel:hover {
+    background: rgba(102, 192, 244, 0.05);
+    border-color: rgba(102, 192, 244, 0.2);
+}
+
+.time-widget-channel.selected {
+    background: rgba(102, 192, 244, 0.1);
+    border-color: rgba(102, 192, 244, 0.3);
+    box-shadow: 0 0 10px rgba(102, 192, 244, 0.2);
+}
+
+.time-widget-channel-name {
+    color: #66c0f4;
+    font-weight: 600;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.time-widget-channel-time {
+    color: #c7d5e0;
+    font-size: 14px;
+    margin-bottom: 4px;
+}
+
+.time-widget-channel-status {
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.time-widget-loading {
+    text-align: center;
+    padding: 40px 20px;
+    color: #8f98a0;
+}
+
+.time-widget-loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid rgba(102, 192, 244, 0.1);
+    border-top: 3px solid #66c0f4;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 15px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.time-widget-error {
+    text-align: center;
+    padding: 40px 20px;
+    color: #ff6b6b;
+}
+
+.time-widget-error-icon {
+    font-size: 48px;
+    margin-bottom: 15px;
+}
+
+.time-widget-retry-btn {
+    background: linear-gradient(135deg, #66c0f4, #67c1f5);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    margin-top: 15px;
+}
+
+.time-widget-retry-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(102, 192, 244, 0.3);
+}
+
+.time-widget-trigger {
+    position: fixed;
+    top: 50%;
+    right: 20px;
+    transform: translateY(-50%);
+    background: linear-gradient(135deg, #66c0f4, #67c1f5);
+    color: white;
+    border: none;
+    padding: 15px 20px;
+    border-radius: 50px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 14px;
+    box-shadow: 0 5px 20px rgba(102, 192, 244, 0.3);
+    transition: all 0.3s ease;
+    z-index: 1001;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 120px;
+    justify-content: center;
+    opacity: 1;
+    visibility: visible;
+}
+
+.time-widget-trigger.hidden {
+    opacity: 0 !important;
+    visibility: hidden !important;
+    transform: translateY(-50%) translateX(100px) !important;
+    pointer-events: none;
+}
+
+.time-widget-trigger:not(.hidden):hover {
+    transform: translateY(-50%) translateY(-3px);
+    box-shadow: 0 8px 25px rgba(102, 192, 244, 0.4);
+}
+
+.time-widget-trigger:not(.hidden):active {
+    transform: translateY(-50%) translateY(-1px);
+}
+
+.time-widget-trigger-icon {
+    font-size: 16px;
+}
+
+/* Адаптивность для мобильных устройств */
+@media (max-width: 768px) {
+    .time-widget-container {
+        width: 90%;
+        right: 5%;
+        left: 5%;
+        transform: translateY(100%);
+        height: 80vh;
+        top: 10vh;
+        border-left: none;
+        border-top: 1px solid rgba(102, 192, 244, 0.2);
+        border-radius: 20px 20px 0 0;
+    }
+    
+    .time-widget-container.open {
+        transform: translateY(0);
+    }
+    
+    .time-widget-trigger {
+        right: 15px;
+        bottom: 20px;
+        top: auto;
+        transform: none;
+        position: fixed;
+    }
+    
+    .time-widget-trigger:hover {
+        transform: translateY(-3px);
+    }
+    
+    .time-widget-trigger:active {
+        transform: translateY(-1px);
+    }
+}
+
+/* Анимация появления кнопки */
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(100px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.time-widget-trigger {
+    animation: slideInRight 0.5s ease-out;
+}
+
+/* Дополнительные стили для интеграции с существующим дизайном */
+.time-widget-container * {
+    box-sizing: border-box;
+}
+
+.time-widget-container::-webkit-scrollbar {
+    width: 6px;
+}
+
+.time-widget-container::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.time-widget-container::-webkit-scrollbar-thumb {
+    background: rgba(102, 192, 244, 0.3);
+    border-radius: 3px;
+}
+
+.time-widget-container::-webkit-scrollbar-thumb:hover {
+    background: rgba(102, 192, 244, 0.5);
+}

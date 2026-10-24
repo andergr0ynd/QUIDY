@@ -1,0 +1,41 @@
+# Конфигурационные файлы с чувствительными данными
+OAuth/config.php
+
+# Логи
+logs/
+*.log
+
+# Временные файлы PHP
+*.tmp
+*.cache
+
+# IDE и редакторы
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS файлы
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Backup файлы
+*.bak
+*.backup
+*~
+
+# Composer (если будет использоваться)
+/vendor/
+composer.lock
+
+# Node modules (если будет использоваться)
+node_modules/
+package-lock.json
+
+# Environment файлы
+.env
+.env.local
+.env.production
+

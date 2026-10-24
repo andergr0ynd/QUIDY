@@ -1,0 +1,65 @@
+# Включаем rewrite engine
+RewriteEngine On
+
+# Принудительное перенаправление на HTTPS (с проверкой прокси)
+# Проверяем X-Forwarded-Proto для работы за CloudFlare/nginx
+RewriteCond %{HTTPS} off
+RewriteCond %{HTTP:X-Forwarded-Proto} !https
+RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# Защита конфигурационных файлов
+<FilesMatch "^(config\.php|Database\.php)$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Защита от просмотра директорий
+Options -Indexes
+
+# Безопасность - скрытие версии сервера
+ServerSignature Off
+
+# Защита от XSS и другие заголовки безопасности
+<IfModule mod_headers.c>
+    Header set X-XSS-Protection "1; mode=block"
+    Header set X-Content-Type-Options "nosniff"
+    Header set X-Frame-Options "SAMEORIGIN"
+    Header set Referrer-Policy "strict-origin-when-cross-origin"
+    Header set Permissions-Policy "geolocation=(), microphone=(), camera=()"
+    # Strict-Transport-Security (HSTS) - заставляет браузер использовать только HTTPS
+    Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+    # Content-Security-Policy - дополнительная защита от XSS
+    Header set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' https://telegram.org https://oauth.telegram.org https://api.qrserver.com; img-src 'self' data: https: blob:; style-src 'self' 'unsafe-inline'; font-src 'self'; connect-src 'self'; frame-src 'self' https://www.twitch.tv https://oauth.telegram.org; object-src 'none';"
+</IfModule>
+
+# PHP настройки
+<IfModule mod_php7.c>
+    php_value upload_max_filesize 10M
+    php_value post_max_size 10M
+    php_value memory_limit 128M
+    php_value max_execution_time 300
+    php_value max_input_time 300
+</IfModule>
+
+# Кэширование статических файлов
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType image/jpg "access plus 1 year"
+    ExpiresByType image/jpeg "access plus 1 year"
+    ExpiresByType image/gif "access plus 1 year"
+    ExpiresByType image/png "access plus 1 year"
+    ExpiresByType text/css "access plus 1 month"
+    ExpiresByType application/javascript "access plus 1 month"
+    ExpiresByType application/x-javascript "access plus 1 month"
+</IfModule>
+
+# Сжатие файлов
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css application/javascript application/x-javascript
+</IfModule>
+
+# Защита от hotlinking изображений (раскомментируйте и укажите свой домен)
+# RewriteCond %{HTTP_REFERER} !^$
+# RewriteCond %{HTTP_REFERER} !^http(s)?://(www\.)?ваш-домен\.ru [NC]
+# RewriteRule \.(jpg|jpeg|png|gif)$ - [F]
+

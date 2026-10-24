@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Quidy - безопасная платформа с авторизацией через Discord, Telegram и Twitch. Двухфакторная аутентификация для максимальной защиты вашего аккаунта.">
+    <meta name="keywords" content="авторизация, OAuth, Discord, Telegram, Twitch, 2FA, безопасность">
+    <meta name="author" content="Quidy">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Quidy - Безопасная авторизация">
+    <meta property="og:description" content="Демо без привязки к домену и без входа через соцсети">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary">
+    <meta property="twitter:title" content="Quidy - Безопасная авторизация">
+    <meta property="twitter:description" content="Демо без привязки к домену и без входа через соцсети">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="assets/logo/favicon.png">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Preload critical resources -->
+    <link rel="preload" href="assets/css/styles.css" as="style">
+    <link rel="preload" href="assets/js/script.js" as="script">
+    
+    <title>Quidy - Авторизация через Discord, Telegram, Twitch</title>
+    <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+    <div class="background-gradient"></div>
+    
+    <!-- Preloader -->
+    <div id="preloader" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #0a0e1a; z-index: 9999; display: flex; align-items: center; justify-content: center;">
+        <div style="width: 60px; height: 60px; border: 3px solid rgba(99, 102, 241, 0.2); border-top-color: #6366f1; border-radius: 50%; animation: spin 1.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;"></div>
+    </div>
+    <style>
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .version-indicator {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.9) 0%, rgba(139, 92, 246, 0.9) 100%);
+            color: #fff;
+            padding: 10px 18px;
+            border-radius: 24px;
+            font-size: 12px;
+            font-weight: 600;
+            box-shadow: 0 8px 24px rgba(99, 102, 241, 0.3);
+            z-index: 1000;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+        }
+        
+        .version-indicator:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 12px 32px rgba(99, 102, 241, 0.4);
+        }
+        
+        .version-tooltip {
+            position: absolute;
+            bottom: 100%;
+            right: 0;
+            background: rgba(0, 0, 0, 0.9);
+            color: #fff;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 11px;
+            white-space: nowrap;
+            margin-bottom: 8px;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 1001;
+        }
+        
+        .version-indicator:hover .version-tooltip {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .version-tooltip::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            right: 20px;
+            border: 5px solid transparent;
+            border-top-color: rgba(0, 0, 0, 0.9);
+        }
+    </style>
+    
+    <div class="container">
+        <div class="login-box">
+            <div class="logo-section">
+                <h1 class="logo-text">QUIDY</h1>
+                <p class="subtitle">Демо без входа и без привязки к домену</p>
+            </div>
+            
+            <div class="social-login">
+                <button class="social-btn discord-btn" data-social="discord" id="discord-btn">
+                    <img src="assets/logo/discord.png" alt="Discord" class="social-icon">
+                    <span>Войти через Discord</span>
+                    <div class="btn-glow"></div>
+                </button>
+                
+                <button class="social-btn telegram-btn" data-social="telegram" id="telegram-btn">
+                    <img src="assets/logo/telegram.png" alt="Telegram" class="social-icon">
+                    <span>Войти через Telegram</span>
+                    <div class="btn-glow"></div>
+                </button>
+                
+                <button class="social-btn twitch-btn" data-social="twitch" id="twitch-btn">
+                    <img src="assets/logo/twitch.png" alt="Twitch" class="social-icon">
+                    <span>Войти через Twitch</span>
+                    <div class="btn-glow"></div>
+                </button>
+            </div>
+            
+        </div>
+    </div>
+    
+    <script>
+        // Скрываем preloader после загрузки
+        window.addEventListener('load', function() {
+            const preloader = document.getElementById('preloader');
+            if (preloader) {
+                preloader.style.opacity = '0';
+                preloader.style.transition = 'opacity 0.3s ease';
+                setTimeout(() => {
+                    preloader.style.display = 'none';
+                }, 300);
+            }
+        });
+    </script>
+    
+    <!-- Индикатор версии -->
+    <div class="version-indicator">
+        <div class="version-tooltip">
+            Сборка 84729<br>
+            Дата: 2024-12-27
+        </div>
+        Beta 0.84729.7
+    </div>
+    
+    <script src="assets/js/script.js" defer></script>
+</body>
+</html>
+
